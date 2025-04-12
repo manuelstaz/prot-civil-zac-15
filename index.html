@@ -61,7 +61,7 @@
         action="https://docs.google.com/forms/d/1BDd7tRy5jLbTJsojE3f8qQx6_MjVBUBJY1Xw-6GgdjM/formResponse"
         method="POST"
         target="hidden_iframe"
-        onsubmit="enviarFormulario(); return false;">
+        onsubmit="handleSubmit(); return false;">
         
     <h2>Registro de Donaciones PCZ</h2>
 
@@ -88,7 +88,7 @@
   <iframe name="hidden_iframe" style="display:none;"></iframe>
 
   <script>
-    function enviarFormulario() {
+    async function handleSubmit() {
       const nombre = document.getElementById("nombre").value;
       const cantidad = document.getElementById("cantidad").value;
       const poblacion = document.getElementById("poblacion").value;
@@ -99,13 +99,14 @@
       localStorage.setItem("folio_recibo_pcz", folio);
       const folioTexto = "PCZ-" + String(folio).padStart(4, "0");
 
-      const doc = new window.jspdf.jsPDF();
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
 
       const logo = new Image();
       logo.crossOrigin = "anonymous";
       logo.src = "https://i.ibb.co/xhMxkxJ/logo-patronato.jpg";
 
-      logo.onload = function () {
+      logo.onload = () => {
         doc.addImage(logo, "JPEG", 150, 10, 40, 20);
         doc.setFontSize(16);
         doc.text("RECIBO DE DONACIÓN", 105, 40, null, null, "center");
