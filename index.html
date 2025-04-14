@@ -2,13 +2,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registro de Donaciones PCZ</title>
+  <title>Registro de Donaciones - Patronato Zacualpan</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f4f8;
+      background: #eef3f8;
       margin: 0;
       padding: 2rem;
       text-align: center;
@@ -122,6 +122,7 @@
 
       const logo = new Image();
       logo.onload = function () {
+      document.getElementById("donacionForm").reset();
         ctx.drawImage(logo, 200, y, 120, 120);
 
         ctx.font = "24px Arial";
@@ -133,11 +134,19 @@
 
         const link = document.getElementById("whatsapp");
         const dataURL = canvas.toDataURL("image/png");
-        const mensaje = `Hola! Acabo de realizar una donación a Protección Civil Zacualpan. Folio: PCZ-${String(folio).padStart(4, "0")}`;
-        link.href = `https://wa.me/?text=${encodeURIComponent(mensaje)}%0A${dataURL}`;
+
+        const a = document.createElement("a");
+        a.href = dataURL;
+        a.download = "recibo_donacion_PCZ.png";
+        a.click();
+
+        link.href = `https://wa.me/?text=${encodeURIComponent(
+          "Hola! Acabo de realizar una donación a Protección Civil Zacualpan. Folio: PCZ-" + String(folio).padStart(4, "0")
+        )}`;
         link.style.display = "block";
 
         localStorage.setItem("folioPCZ", parseInt(folio) + 1);
+        
       };
       logo.src = "https://github.com/manuelstaz/proteccion-civil-zacualpan/blob/main/patronato%20logo.JPG?raw=true";
     });
