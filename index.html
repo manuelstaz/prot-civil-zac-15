@@ -139,7 +139,7 @@
         a.download = "recibo_" + numeroFolio + ".png";
         a.click();
 
-        const mensaje = `Folio: ${numeroFolio}\nDonador: ${nombre}\nGracias por tu apoyo al Patronato PCZ 💛💙`;
+        const mensaje = `Folio: ${numeroFolio}\nDonador: ${nombre}\nPoblación: ${poblacion}\nCantidad entregada: $${cantidad} MXN\nFecha: ${fecha}\nGracias por tu apoyo al Patronato PCZ 💛💙`;
         enlaceWA.href = "https://wa.me/?text=" + encodeURIComponent(mensaje);
         enlaceWA.style.display = "inline-block";
 
