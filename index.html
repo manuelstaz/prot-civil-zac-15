@@ -103,8 +103,7 @@
       const doc = new jsPDF();
 
       const logo = new Image();
-      logo.crossOrigin = "anonymous";
-      logo.src = "https://github.com/manuelstaz/proteccion-civil-zacualpan/blob/main/patronato%20logo.JPG?raw=true";
+      logo.src = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////2wBDAf//////////////////////////////////////////////////////////////////////////////////////wAARCAAQABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQIDB//EABwQAAICAgMBAAAAAAAAAAAAAAABAhEDBAUhMf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFREBAQAAAAAAAAAAAAAAAAAAABH/2gAMAwEAAhEDEQA/AJP8AxzB1X//Z";
 
       logo.onload = () => {
         doc.addImage(logo, "JPEG", 150, 10, 40, 20);
