@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registro de Donaciones PCZ</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 2rem;
+      color: #333;
+    }
+    form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      color: #5b3cc4;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.5rem;
+      background-color: #5b3cc4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #472c9c;
+    }
+    .mensaje {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <form id="donacionesForm"
+        action="https://docs.google.com/forms/d/1BDd7tRy5jLbTJsojE3f8qQx6_MjVBUBJY1Xw-6GgdjM/formResponse"
+        method="POST"
+        target="hidden_iframe"
+        onsubmit="handleSubmit(); return false;">
+        
+    <h2>Registro de Donaciones PCZ</h2>
+
+    <label>Nombre completo del donador</label>
+    <input name="entry.1092686377" id="nombre" required>
+
+    <label>Número de teléfono</label>
+    <input name="entry.1406824512" required>
+
+    <label>Población</label>
+    <input name="entry.1635357024" id="poblacion" required>
+
+    <label>Cantidad entregada ($)</label>
+    <input name="entry.1268789087" type="number" min="1" id="cantidad" required>
+
+    <label>Cantidad prometida por mes ($)</label>
+    <input name="entry.848721932" type="number" min="1" required>
+
+    <button type="submit">Enviar donación</button>
+
+    <p class="mensaje" id="mensaje"></p>
+  </form>
+
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+  <script>
+    async function handleSubmit() {
+      const nombre = document.getElementById("nombre").value;
+      const cantidad = document.getElementById("cantidad").value;
+      const poblacion = document.getElementById("poblacion").value;
+      const fecha = new Date().toLocaleString("es-MX");
+
+      let folio = localStorage.getItem("folio_recibo_pcz");
+      folio = folio ? parseInt(folio) + 1 : 1;
+      localStorage.setItem("folio_recibo_pcz", folio);
+      const folioTexto = "PCZ-" + String(folio).padStart(4, "0");
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const logo = new Image();
+      logo.crossOrigin = "anonymous";
+      logo.src = "https://i.ibb.co/xhMxkxJ/logo-patronato.jpg";
+
+      logo.onload = () => {
+        doc.addImage(logo, "JPEG", 150, 10, 40, 20);
+        doc.setFontSize(16);
+        doc.text("RECIBO DE DONACIÓN", 105, 40, null, null, "center");
+
+        doc.setFontSize(12);
+        doc.text("Folio: " + folioTexto, 20, 50);
+        doc.text("Nombre del donador: " + nombre, 20, 60);
+        doc.text("Población: " + poblacion, 20, 70);
+        doc.text("Cantidad entregada: $" + cantidad + " MXN", 20, 80);
+        doc.text("Fecha: " + fecha, 20, 90);
+
+        doc.setFontSize(11);
+        doc.text("------------------------------------------------------------", 20, 100);
+        doc.text("Gracias por tu generoso apoyo. Cada peso salva vidas.", 20, 110);
+        doc.text("Zacualpan y pueblos vecinos te lo agradecen.", 20, 117);
+
+        doc.save(folioTexto + "_" + nombre.replace(/\s+/g, "_") + ".pdf");
+
+        document.getElementById("mensaje").textContent = "✅ Donación registrada correctamente.";
+        document.getElementById("donacionesForm").reset();
+      };
+    }
+  </script>
+</body>
+</html>
