@@ -60,6 +60,7 @@
     <input type="tel" id="telefono" placeholder="Número de teléfono" required />
     <input type="text" id="poblacion" placeholder="Población" required />
     <input type="number" id="cantidad" placeholder="Cantidad entregada ($)" required />
+    <input type="number" id="promesa" placeholder="Cantidad prometida por mes ($)" required />
     <button type="submit">Enviar donación</button>
   </form>
 
@@ -86,6 +87,7 @@
       const telefono = document.getElementById("telefono").value;
       const poblacion = document.getElementById("poblacion").value;
       const cantidad = document.getElementById("cantidad").value;
+      const promesa = document.getElementById("promesa").value;
       const frase = frases[Math.floor(Math.random() * frases.length)];
 
       let folio = localStorage.getItem("folioPCZ") || 1;
@@ -96,7 +98,6 @@
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Marcos
       ctx.strokeStyle = "#003399";
       ctx.lineWidth = 8;
       ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
@@ -114,6 +115,7 @@
       ctx.fillText("Nombre del donador: " + nombre, 30, y); y += 40;
       ctx.fillText("Población: " + poblacion, 30, y); y += 40;
       ctx.fillText("Cantidad entregada: $" + cantidad + " MXN", 30, y); y += 40;
+      ctx.fillText("Promesa mensual: $" + promesa + " MXN", 30, y); y += 40;
 
       const fecha = new Date().toLocaleString("es-MX");
       ctx.fillText("Fecha: " + fecha, 30, y); y += 60;
@@ -130,7 +132,9 @@
         });
 
         const link = document.getElementById("whatsapp");
-        link.href = `https://wa.me/?text=Hola!%20Acabo%20de%20realizar%20una%20donación%20a%20Protección%20Civil%20Zacualpan.%20Folio%3A%20PCZ-${String(folio).padStart(4, "0")}`;
+        const dataURL = canvas.toDataURL("image/png");
+        const mensaje = `Hola! Acabo de realizar una donación a Protección Civil Zacualpan. Folio: PCZ-${String(folio).padStart(4, "0")}`;
+        link.href = `https://wa.me/?text=${encodeURIComponent(mensaje)}%0A${dataURL}`;
         link.style.display = "block";
 
         localStorage.setItem("folioPCZ", parseInt(folio) + 1);
