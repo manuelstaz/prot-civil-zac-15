@@ -121,8 +121,13 @@
       ctx.fillText("Fecha: " + fecha, 30, y); y += 60;
 
       const logo = new Image();
-      logo.onload = function () {
-      document.getElementById("donacionForm").reset();
+      
+    
+    const link = document.getElementById("whatsapp");
+    const mensaje = `Hola! Acabo de realizar una donación a Protección Civil Zacualpan.\nNombre: ${nombre}\nFolio: PCZ-${String(folio).padStart(4, "0")}`;
+    link.href = "https://wa.me/?text=" + encodeURIComponent(mensaje);
+    link.style.display = "inline-block";
+    
         ctx.drawImage(logo, 200, y, 120, 120);
 
         ctx.font = "24px Arial";
